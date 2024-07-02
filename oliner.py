@@ -74,9 +74,9 @@ if len(sys.argv) < 7:
             gen(o, text)
             
             if os.path.exists(o):
-                print(f"\nFile {o} berhasil dibuat dengan mode {m}\n")
+                print(f"File {o} berhasil dibuat dengan mode {m}")
             else:
-                print(f"\nFile {o} gagal dibuat dengan mode {m}\n")
+                print(f"File {o} gagal dibuat dengan mode {m}\n")
         else:
             print(f"\nMode {m} tidak ditemukan\nSilahkan gunakan mode yang tersedia\npython oliner.py -h\natau\npython oliner.py --help\n")
     else:

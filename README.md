@@ -3,11 +3,11 @@ Chrome Password Stealer
 
 Untuk penggunaan
 ```
-gcc.exe main.c -o main.exe
+gcc.exe stealer.c -o stealer.exe
 ```
 
 ```
-main.exe
+stealer.exe
 ```
 
-Pastikan ip server dan port netcat yang ada pada main.c disesuaikan
+Pastikan ip server dan port netcat yang ada pada stealer.c disesuaikan

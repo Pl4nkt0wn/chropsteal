@@ -3,7 +3,7 @@ import sys
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-if len(sys.argv) != 4:
+if len(sys.argv) > 4 and len(sys.argv) < 3:
     print("Penggunaan:  \npython3 notif.py [server] [port] [pesan]")
     sys.exit(1)
 else:

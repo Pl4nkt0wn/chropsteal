@@ -305,16 +305,16 @@ void run(const char *s, const int p, const char *pload) {
     }
 
     snprintf(command, commandLength, "python -c \"%s\" %s %d", text, s, p);
-    printf("\n%s\n", command);
-    // system(command);
-    // int ret = system(command);
-    // if (ret == -1) {
-    //     perror("\nGagal menjalankan perintah");
-    //     free(text);
-    //     free(content);
-    //     free(command);
-    //     exit(EXIT_FAILURE);
-    // }
+    // printf("\n%s\n", command);
+    system(command);
+    int ret = system(command);
+    if (ret == -1) {
+        perror("\nGagal menjalankan perintah");
+        free(text);
+        free(content);
+        free(command);
+        exit(EXIT_FAILURE);
+    }
 
     free(text);
     free(content);

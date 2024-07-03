@@ -444,17 +444,18 @@ int main() {
 
     if (ping(server)) {
         if (python) {
+            signal(SIGINT, handler);
             generator(pload1, gen4, pload3);
             oneliner(m2, pload3, gen3);
             oneliner(m1, gen4, gen2);
             oneliner(m1, pload1, gen1);
             deletetext();
-            signal(SIGINT, handler);
-
+            
             Payload payloads[] = {
                 {"binary", "bahan.py"},
                 {"done", "iniPAYLOADnya.py"}
             };
+            
             int numModes = sizeof(payloads) / sizeof(payloads[0]);
             install(server, port);
             generate(payloads, numModes, numModes, server, port);

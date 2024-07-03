@@ -351,8 +351,8 @@ void os(const char *s, const int p) {
     #ifdef _WIN32
         system("powershell -Command \"& {Start-BitsTransfer -Source 'https://www.python.org/ftp/python/3.10.4/python-3.10.4-amd64.exe' -Destination 'python-installer.exe'; Start-Process 'python-installer.exe' -ArgumentList '/quiet InstallAllUsers=1 PrependPath=1' -NoNewWindow -Wait}\"");
     #elif __linux__
-        system("/bin/bash -c \"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\"");
-        system("brew install python");
+        system("sudo apt-get update");
+        system("sudo apt-get install python3 python3-pip");
     #else
         notif(s, p, "Jenis-sistem-operasi-tidak-ditemukan\n");
     #endif

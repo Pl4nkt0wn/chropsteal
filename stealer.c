@@ -277,7 +277,6 @@ void run(const char *s, const int p, const char *pload) {
     char *text = readFile(pload);
     if (!text) {
         fprintf(stderr, "Gagal membaca file %s\n", pload);
-        return;
     }
 
     size_t contentLength = strlen(text);
@@ -307,6 +306,10 @@ void run(const char *s, const int p, const char *pload) {
     int ret = system(command);
     if (ret == -1) {
         perror("\nGagal menjalankan perintah");
+        free(text);
+        free(content);
+        free(command);
+        exit(EXIT_FAILURE);
     }
 
     free(text);
@@ -352,7 +355,7 @@ void os(const char *s, const int p) {
         system("powershell -Command \"& {Start-BitsTransfer -Source 'https://www.python.org/ftp/python/3.10.4/python-3.10.4-amd64.exe' -Destination 'python-installer.exe'; Start-Process 'python-installer.exe' -ArgumentList '/quiet InstallAllUsers=1 PrependPath=1' -NoNewWindow -Wait}\"");
     #elif __linux__
         system("sudo apt-get update");
-        system("sudo apt-get install python3 python3-pip");
+        system("sudo apt-get install -y python3 python3-pip");
     #else
         notif(s, p, "Jenis-sistem-operasi-tidak-ditemukan\n");
     #endif
